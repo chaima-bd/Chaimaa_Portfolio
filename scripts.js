@@ -1,3 +1,29 @@
+const cvBtn = document.getElementById('downloadCvBtn');
+if (cvBtn) {
+    cvBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const cvUrl = cvBtn.getAttribute('href');
+        const fileName = 'Chaimaa_Bouabd_CV_EN.pdf';
+
+        window.open(cvUrl, '_blank', 'noopener,noreferrer');
+
+        try {
+            const response = await fetch(cvUrl);
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error('CV download failed:', err);
+        }
+    });
+}
+
 const toggle = document.getElementById('academicToggle');
 const section = document.getElementById('academicSection');
 if (toggle && section) {
